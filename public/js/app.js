@@ -224,3 +224,98 @@ function submitPayment() {
 
     goBackToOrder();
 }
+
+// Preview gambar sebelum upload
+document.getElementById("gambarMenu").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            document.getElementById("previewGambar").src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle form submission
+document
+    .getElementById("formTambahMenu")
+    .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Tampilkan loading
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+
+        // Buat FormData object
+        const formData = new FormData(this);
+
+        // Kirim data via AJAX
+        fetch("{{ route('menu.store') }}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                Accept: "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Tutup modal
+                    const modal = bootstrap.Modal.getInstance(
+                        document.getElementById("tambahMenuModal")
+                    );
+                    modal.hide();
+
+                    // Tampilkan notifikasi sukses
+                    showAlert("success", "Menu berhasil ditambahkan");
+
+                    // Reset form
+                    this.reset();
+                    document.getElementById("previewGambar").src =
+                        "{{ asset('img/placeholder-image.jpg') }}";
+
+                    // Refresh daftar menu
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showAlert(
+                        "danger",
+                        data.message || "Gagal menambahkan menu"
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                showAlert("danger", "Terjadi kesalahan saat menyimpan menu");
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "Simpan Menu";
+            });
+    });
+
+// Fungsi untuk menampilkan alert
+function showAlert(type, message) {
+    const alertDiv = document.createElement("div");
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.style.position = "fixed";
+    alertDiv.style.top = "20px";
+    alertDiv.style.right = "20px";
+    alertDiv.style.zIndex = "9999";
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+
+    document.body.appendChild(alertDiv);
+
+    // Hilangkan alert setelah 5 detik
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,29 +12,38 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('pengaturan', compact('user'));
+        $users = User::where('user_id', '!=', $user->user_id)->get(); // Mengambil semua user kecuali yang sedang login
+
+        return view('pengaturan', [
+            'user' => $user,
+            'users' => $users
+        ]);
     }
 
     public function update(Request $request)
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|string|min:6',
+        // Validasi manual tanpa try-catch
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,' . Auth::id() . ',user_id',
+            'password' => 'nullable|min:8|confirmed'
         ]);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        // Update langsung ke database
+        $updated = User::where('user_id', Auth::id())
+            ->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $validated['password']
+                    ? Hash::make($validated['password'])
+                    : Auth::user()->password
+            ]);
 
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
+        if ($updated) {
+            return redirect()->route('pengaturan')
+                ->with('success', 'Profil berhasil diupdate');
         }
 
-        $user->save();
-
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+        return back()->with('error', 'Gagal mengupdate profil');
     }
 }

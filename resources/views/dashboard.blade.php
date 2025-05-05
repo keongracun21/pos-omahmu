@@ -46,7 +46,9 @@
                     <button onclick="filterMenu('minuman')">Minuman</button>
                     <button onclick="filterMenu('snack')">Snack</button>
                 </div>
-                <button style="border: none; padding: 4px 10px; border-radius: 6px; background-color: #1E2431; color: #fff; font-size: 0.8rem;">+ Tambah Menu</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMenuModal" style="border: none; padding: 4px 10px; border-radius: 6px; background-color: #1E2431; color: #fff; font-size: 0.8rem;">
+                    <i class="bi bi-plus"></i> Tambah Menu
+                </button>
             </div>
 
             <div class="menu-grid" id="menuGrid">
@@ -157,7 +159,6 @@
                 </div>
             </div>
 
-            <!-- Payment Panel (initially hidden) -->
             <div id="paymentPanel" class="order-panel ms-4 d-none">
                 <div>
                     <h5>Payment</h5>
@@ -231,6 +232,66 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah Menu -->
+<div class="modal fade" id="tambahMenuModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Menu Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- Upload Gambar -->
+                    <div class="mb-3 text-center">
+                        <div class="image-upload-container mb-2">
+                            <img id="previewGambar" src="{{ asset('img/placeholder-image.jpg') }}"
+                                class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover;">
+                        </div>
+                        <input type="file" class="form-control d-none" id="gambarMenu" name="gambar" accept="image/*">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="document.getElementById('gambarMenu').click()">
+                            <i class="bi bi-image"></i> Pilih Gambar
+                        </button>
+                        <small class="text-muted d-block mt-1">Format: JPG/PNG (Maks. 2MB)</small>
+                    </div>
+
+                    <!-- Kategori -->
+                    <div class="mb-3">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-select" name="kategori" required>
+                            <option value="" selected disabled>Pilih Kategori</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+
+                    <!-- Nama Menu -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Menu</label>
+                        <input type="text" class="form-control" name="nama_menu" placeholder="Contoh: Nasi Goreng Spesial" required>
+                    </div>
+
+                    <!-- Harga -->
+                    <div class="mb-3">
+                        <label class="form-label">Harga</label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga" min="1000" step="500" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Menu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

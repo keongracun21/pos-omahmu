@@ -57,7 +57,7 @@
         </div>
 
         <!-- Content Area dengan padding kiri lebih besar -->
-        <div class="content-area ps-5 pe-4 py-4 flex-grow-1" style="margin-left: 15px;">
+        <div class="content-area ps-5 pe-4 py-4 flex-grow-1" style="margin-left: 15px; background-color: #f8f9fa;">
             @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show">
                 {{ session('success') }}
@@ -68,77 +68,206 @@
             <div class="tab-content">
                 <!-- Tab Profil Saya -->
                 <div class="tab-pane fade show active" id="profile">
-                    <div class="card shadow-sm p-4">
-                        <!-- Profile Header -->
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="position-relative">
-                                <img src="{{ asset('img/profile-picture.jpg') }}"
-                                    class="rounded-circle"
-                                    style="width: 80px; height: 80px; object-fit: cover;"
-                                    alt="Profile Picture">
-                                <button class="btn btn-sm btn-secondary position-absolute bottom-0 end-0 rounded-circle p-1">
-                                    <i class="bi bi-camera-fill"></i>
-                                </button>
-                            </div>
-                            <div class="ms-4">
-                                <h4 class="mb-1">{{ $user->name }}</h4>
-                                <span class="badge bg-primary">{{ $user->role ?? 'User' }}</span>
-                            </div>
+                    <!-- Profile Header -->
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="position-relative">
+                            <img src="{{ asset('img/profile-picture.jpg') }}"
+                                class="rounded-circle"
+                                style="width: 80px; height: 80px; object-fit: cover;"
+                                alt="Profile Picture">
+                            <button class="btn btn-sm btn-secondary position-absolute bottom-0 end-0 rounded-circle p-1">
+                                <i class="bi bi-camera-fill"></i>
+                            </button>
+                        </div>
+                        <div class="ms-4">
+                            <h4 class="mb-1">{{ $user->name }}</h4>
+                            <span class="badge bg-primary">{{ $user->role ?? 'User' }}</span>
+                        </div>
+                    </div>
+
+                    <h4 class="mb-4">Informasi Personal</h4>
+
+                    <form action="{{ route('pengaturan.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Nama -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" name="name" class="form-control input-custom-plain"
+                                value="{{ old('name', $user->name) }}" required>
                         </div>
 
-                        <h4 class="mb-4">Informasi Personal</h4>
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Alamat Email</label>
+                            <input type="email" name="email" class="form-control input-custom-plain"
+                                value="{{ old('email', $user->email) }}" required>
+                        </div>
 
-                        <form action="{{ route('pengaturan.update') }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <!-- Nama -->
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama</label>
-                                <input type="text" name="name" class="form-control input-custom"
-                                    value="{{ old('name', $user->name) }}" required>
+                        <!-- Password Baru dan Konfirmasi Password (Bersampingan) -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Password Baru</label>
+                                <input type="password" name="password" class="form-control input-custom-plain">
                             </div>
-
-                            <!-- Email -->
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Alamat Email</label>
-                                <input type="email" name="email" class="form-control input-custom"
-                                    value="{{ old('email', $user->email) }}" required>
+                            <div class="col-md-6 mb-3">
+                                <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation" class="form-control input-custom-plain">
                             </div>
+                        </div>
+                        <small class="text-muted d-block mb-4">Kosongkan jika tidak ingin mengubah password.</small>
 
-                            <!-- Password Baru dan Konfirmasi Password (Bersampingan) -->
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="password" class="form-label">Password Baru</label>
-                                    <input type="password" name="password" class="form-control input-custom">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" name="password_confirmation" class="form-control input-custom">
-                                </div>
-                            </div>
-                            <small class="text-muted d-block mb-4">Kosongkan jika tidak ingin mengubah password.</small>
-
-                            <!-- Tombol Aksi -->
-                            <div class="d-flex justify-content-end gap-3">
-                                <a href="{{ route('dashboard') }}" class="btn btn-cancel">
-                                    <i class="bi bi-x-lg me-2"></i> Batal
-                                </a>
-                                <button type="submit" class="btn btn-save">
-                                    <i class="bi bi-save-fill me-2"></i> Simpan Perubahan
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <!-- Tombol Aksi -->
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="{{ route('dashboard') }}" class="btn btn-cancel">
+                                <i class="bi bi-x-lg me-2"></i> Batal
+                            </a>
+                            <button type="submit" class="btn btn-save">
+                                <i class="bi bi-save-fill me-2"></i> Simpan Perubahan
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Tab Management Akses -->
                 <div class="tab-pane fade" id="access">
                     <div class="card shadow-sm p-4">
                         <h4 class="mb-4">Management Akses</h4>
-                        <div class="text-center py-5">
-                            <i class="bi bi-shield-lock fs-1 text-muted"></i>
-                            <p class="text-muted mt-3">Fitur Management Akses akan segera tersedia</p>
+
+                        @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show mb-4">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mb-4">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
+                        @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show mb-4">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
+                        <!-- Form Tambah User Baru -->
+                        <div class="mb-5">
+                            <h5 class="mb-3">Tambah User Baru</h5>
+                            <form action="{{ route('users.store') }}" method="POST">
+                                @csrf
+
+                                <div class="row g-3">
+                                    <!-- Nama -->
+                                    <div class="col-md-6">
+                                        <label for="new_name" class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                            id="new_name" name="name" value="{{ old('name') }}" required>
+                                        @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="col-md-6">
+                                        <label for="new_email" class="form-label">Email</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            id="new_email" name="email" value="{{ old('email') }}" required>
+                                        @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Role -->
+                                    <div class="col-md-6">
+                                        <label for="new_role" class="form-label">Role</label>
+                                        <select class="form-select @error('role') is-invalid @enderror"
+                                            id="new_role" name="role" required>
+                                            <option value="" selected disabled>Pilih Role</option>
+                                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                            <option value="kasir" {{ old('role') == 'kasir' ? 'selected' : '' }}>Kasir</option>
+                                        </select>
+                                        @error('role')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="col-md-6">
+                                        <label for="new_password" class="form-label">Password</label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                            id="new_password" name="password" required>
+                                        @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Password Confirmation -->
+                                    <div class="col-md-6">
+                                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                        <input type="password" class="form-control"
+                                            id="password_confirmation" name="password_confirmation" required>
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Submit -->
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-plus-circle me-2"></i> Tambah User
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Daftar User -->
+                        <div class="mt-5">
+                            <h5 class="mb-3">Daftar Pengguna</h5>
+                            @if($users->count() > 0)
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($users as $user)
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $user->role == 'admin' ? 'danger' : 'primary' }}">
+                                                    {{ ucfirst($user->role) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            @else
+                            <div class="text-center py-3">
+                                <i class="bi bi-people fs-3 text-muted"></i>
+                                <p class="text-muted mt-2">Belum ada data pengguna</p>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
