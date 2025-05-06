@@ -244,7 +244,7 @@
                 <h5 class="modal-title">Tambah Menu Produk</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('stok_menu.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <!-- Upload Gambar -->
@@ -253,7 +253,7 @@
                             <img id="previewGambar" src="{{ asset('img/placeholder-image.jpg') }}"
                                 class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover;">
                         </div>
-                        <input type="file" class="form-control d-none" id="gambarMenu" name="gambar" accept="image/*">
+                        <input type="file" class="form-control d-none" id="gambarMenu" name="gambar_produk" accept="image/*">
                         <button type="button" class="btn btn-sm btn-outline-secondary"
                             onclick="document.getElementById('gambarMenu').click()">
                             <i class="bi bi-image"></i> Pilih Gambar
@@ -264,7 +264,7 @@
                     <!-- Kategori -->
                     <div class="mb-3">
                         <label class="form-label">Kategori</label>
-                        <select class="form-select" name="kategori" required>
+                        <select class="form-select" name="jenis_menu" required>
                             <option value="" selected disabled>Pilih Kategori</option>
                             <option value="makanan">Makanan</option>
                             <option value="minuman">Minuman</option>
@@ -277,6 +277,13 @@
                         <label class="form-label">Nama Menu</label>
                         <input type="text" class="form-control" name="nama_menu" placeholder="Contoh: Nasi Goreng Spesial" required>
                     </div>
+
+                    <!-- Kuantitas -->
+                    <div class="mb-3">
+                        <label class="form-label">Kuantitas</label>
+                        <input type="number" class="form-control" name="kuantitas" min="1" placeholder="Contoh: 50" required>
+                    </div>
+
 
                     <!-- Harga -->
                     <div class="mb-3">

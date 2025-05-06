@@ -2,22 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StokMenu extends Model
 {
-    use HasFactory;
+    protected $table = 'stok_menu'; // <--- Ini penting
 
-    protected $table = 'stok_menu';
-    protected $primaryKey = 'id_menu';
+    protected $primaryKey = 'id_menu'; // sesuaikan jika bukan 'id'
+
     public $timestamps = false;
 
     protected $fillable = [
-        'menu',
+        'nama_menu',
         'harga',
         'kuantitas',
-        'gambar',
+        'gambar_produk',
         'jenis_menu'
     ];
 }

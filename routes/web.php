@@ -7,7 +7,7 @@ use App\Http\Controllers\{
     ProfileController,
     DashboardController,
     UserController,
-    MenuController
+    StokMenuController
 };
 
 // Public Routes
@@ -24,7 +24,9 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/menu', [MenuController::class, 'store'])->name('menu.store');
+
+    // StokMenu Routes (menggunakan resource untuk route CRUD otomatis)
+    Route::resource('stok_menu', StokMenuController::class)->except(['create', 'edit']); // Menyembunyikan create/edit jika menggunakan modal
 
     // Profile Settings
     Route::prefix('pengaturan')->controller(ProfileController::class)->group(function () {
