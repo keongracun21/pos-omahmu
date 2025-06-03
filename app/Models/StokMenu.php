@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StokMenu extends Model
 {
-    protected $table = 'stok_menu'; // <--- Ini penting
-
-    protected $primaryKey = 'id_menu'; // sesuaikan jika bukan 'id'
-
+    protected $table = 'stok_menu';
+    protected $primaryKey = 'id_menu';
     public $timestamps = false;
 
     protected $fillable = [

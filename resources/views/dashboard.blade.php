@@ -52,88 +52,13 @@
             </div>
 
             <div class="menu-grid" id="menuGrid">
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Biasa', 10000)">
-                    <img src="{{ asset('img/nasgor-biasa.png') }}" alt="Nasgor Biasa" style="width: 95%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Biasa</h6>
-                    <p class="text-center">Rp 10.000</p>
+                @foreach ($menus as $menu)
+                <div class="menu-item" data-kategori="{{ $menu->jenis_menu }}" onclick="selectMenu('{{ $menu->nama_menu }}', '{{ $menu->harga }}')">
+                    <img src="{{ asset('storage/' . $menu->gambar_produk) }}" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 100px; border-radius: 6px;">
+                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">{{ $menu->nama_menu }}</h6>
+                    <p class="text-center">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
                 </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Ati', 13000)">
-                    <img src="{{ asset('img/nasgor-ati.png') }}" alt="Nasgor Ati" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Ati</h6>
-                    <p class="text-center">Rp 13.000</p>
-                </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Ayam', 13000)">
-                    <img src="{{ asset('img/nasgor-ayam.png') }}" alt="Nasgor Ayam" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Ayam</h6>
-                    <p class="text-center">Rp 13.000</p>
-                </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Sosis', 12000)">
-                    <img src="{{ asset('img/nasgor-sosis.png') }}" alt="Nasgor Sosis" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Sosis</h6>
-                    <p class="text-center">Rp 12.000</p>
-                </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Spesial', 16000)">
-                    <img src="{{ asset('img/nasgor-spesial.png') }}" alt="Nasgor Spesial" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Spesial</h6>
-                    <p class="text-center">Rp 16.000</p>
-                </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Setan', 17000)">
-                    <img src="{{ asset('img/nasgor-setan.png') }}" alt="Nasgor Setan" style="width: 90%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Setan</h6>
-                    <p class="text-center">Rp 17.000</p>
-                </div>
-                <div class="menu-item" data-kategori="makanan" onclick="selectMenu('Nasgor Bakso', 13000)">
-                    <img src="{{ asset('img/nasgor-bakso.png') }}" alt="Nasgor Bakso" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Nasgor Bakso</h6>
-                    <p class="text-center">Rp 13.000</p>
-                </div>
-
-                <!-- Menu Minuman -->
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Susu Sirup', 10000)" style="display:none;">
-                    <img src="{{ asset('img/susu-sirup.png') }}" alt="Susu Sirup" class="center-img" style="width: 95%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Susu Sirup</h6>
-                    <p class="text-center">Rp 10.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Dancow Keju', 13000)" style="display:none;">
-                    <img src="{{ asset('img/dancow-keju.png') }}" alt="Dancow Keju" class="center-img" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Dancow Keju</h6>
-                    <p class="text-center">Rp 13.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Dancow Putih', 13000)" style="display:none;">
-                    <img src="{{ asset('img/dancow-putih.png') }}" alt="Dancow Putih" class="center-img" style="width: 80%; height: 80px; border-radius: 6px; margin-top: 15%;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Dancow Putih</h6>
-                    <p class="text-center">Rp 13.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Dancow Coklat', 12000)" style="display:none;">
-                    <img src="{{ asset('img/dancow-coklat.png') }}" alt="Dancow Coklat" class="center-img" style="width: 50%; height: 100px; border-radius: 6px; display: block;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Dancow Coklat</h6>
-                    <p class="text-center">Rp 12.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Milo', 16000)" style="display:none;">
-                    <img src="{{ asset('img/milo.png') }}" alt="Milo" class="center-img" style="width: 50%; height: 100px; border-radius: 6px; display: block;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Milo</h6>
-                    <p class="text-center">Rp 16.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Hilo', 17000)" style="display:none;">
-                    <img src="{{ asset('img/hilo.png') }}" alt="Hilo" class="center-img" style="width: 50%; height: 100px; border-radius: 6px; display: block;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Hilo</h6>
-                    <p class="text-center">Rp 17.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Susu Jahe', 17000)" style="display:none;">
-                    <img src="{{ asset('img/susu-jahe.png') }}" alt="Susu Jahe" class="center-img" style="width: 100%; height: 100px; border-radius: 6px;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Susu Jahe</h6>
-                    <p class="text-center">Rp 17.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Susu Putih', 17000)" style="display:none;">
-                    <img src="{{ asset('img/susu-putih.png') }}" alt="Susu Putih" class="center-img" style="width: 80%; height: 80px; border-radius: 6px; margin-top: 15%;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Susu Putih</h6>
-                    <p class="text-center">Rp 17.000</p>
-                </div>
-                <div class="menu-item" data-kategori="minuman" onclick="selectMenu('Teh Obeng', 17000)" style="display:none;">
-                    <img src="{{ asset('img/teh-obeng.png') }}" alt="Teh Obeng" class="center-img" style="width: 60%; height: 80px; border-radius: 6px; margin-top: 15%;">
-                    <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">Teh Obeng</h6>
-                    <p class="text-center">Rp 17.000</p>
-                </div>
+                @endforeach
             </div>
         </div>
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\StokMenu;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $menus = StokMenu::all(); // ambil semua data dari tabel stok_menu
+        return view('dashboard', compact('menus'));
     }
 }
