@@ -19,7 +19,7 @@
             <i class="bi bi-cursor fs-5"></i>
             <span>PO</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{{ route('laporan.index') }}" class="nav-link">
             <i class="bi bi-file-earmark-bar-graph fs-5"></i>
             <span>Laporan</span>
         </a>
@@ -37,16 +37,18 @@
     </div>
 
     <!-- Main Content -->
-    <div class="d-flex flex-grow-1">
+    <div class="d-flex flex-grow-1 ms-4 ps-2">
         <!-- Left: Menu Content -->
-        <div class="content-area">
-            <div class="menu-header">
+        <div class="content-area pe-3" style="flex: 1;">
+            <div class="menu-header d-flex justify-content-between align-items-center mb-3">
                 <div class="menu-tabs">
                     <button onclick="filterMenu('makanan')">Makanan</button>
                     <button onclick="filterMenu('minuman')">Minuman</button>
                     <button onclick="filterMenu('snack')">Snack</button>
                 </div>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMenuModal" style="border: none; padding: 4px 10px; border-radius: 6px; background-color: #1E2431; color: #fff; font-size: 0.8rem;">
+                <button type="button" class="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#tambahMenuModal"
+                    style="border: none; padding: 4px 10px; border-radius: 6px; background-color: #1E2431; color: #fff; font-size: 0.8rem;">
                     <i class="bi bi-plus"></i> Tambah Menu
                 </button>
             </div>
@@ -54,7 +56,8 @@
             <div class="menu-grid" id="menuGrid">
                 @foreach ($menus as $menu)
                 <div class="menu-item" data-kategori="{{ $menu->jenis_menu }}" onclick="selectMenu('{{ $menu->nama_menu }}', '{{ $menu->harga }}')">
-                    <img src="{{ asset('storage/' . $menu->gambar_produk) }}" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 100px; border-radius: 6px;">
+                    <img src="{{ asset('storage/' . $menu->gambar_produk) }}" alt="{{ $menu->nama_menu }}"
+                        style="width: 100%; height: 100px; border-radius: 6px;">
                     <h6 class="mt-2 text-center fw-bold" style="color: #1E2431;">{{ $menu->nama_menu }}</h6>
                     <p class="text-center">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
                 </div>
@@ -63,12 +66,13 @@
         </div>
 
         <!-- Container Panel -->
-        <div class="order-panel-container">
+        <div class="order-panel-container d-flex flex-column gap-3">
 
             <!-- Order Menu Panel -->
-            <div id="orderPanel" class="order-panel ms-4">
+            <div id="orderPanel" class="order-panel">
                 <div>
                     <h5>Order Menu</h5>
+                    <p class="text-muted mb-2">No. Transaksi: <strong>#{{ 'POS' . date('ymdHis') }}</strong></p>
                     <div id="orderContent" class="mt-3 d-flex flex-column gap-2">
                         <small class="text-muted">Silahkan pilih menu</small>
                     </div>
@@ -78,13 +82,18 @@
                         <small id="totalItemsLabel">0 items</small>
                         <div id="totalHargaLabel">Rp 0</div>
                     </div>
-                    <button class="btn-order" onclick="goToPayment()">
-                        <i class="bi bi-save-fill"></i> Order
-                    </button>
+                    <form action="{{ route('order.submit') }}" method="POST" id="orderForm">
+                        @csrf
+                        <input type="hidden" name="id_transaksi" value="{{ 'POS' . date('ymdHis') }}">
+                        <input type="hidden" name="total" id="totalInput">
+                        <button type="submit" class="btn-order">
+                            <i class="bi bi-save-fill"></i> Order
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div id="paymentPanel" class="order-panel ms-4 d-none">
+            <div id="paymentPanel" class="order-panel d-none">
                 <div>
                     <h5>Payment</h5>
                     <div id="paymentOptions" class="mt-3 d-flex justify-content-between text-center">
@@ -230,5 +239,13 @@
 
 <!-- JS -->
 <script src="{{ asset('js/app.js') }}"></script>
+<script>
+    document.getElementById('orderForm').addEventListener('submit', function() {
+        const totalLabel = document.getElementById('totalHargaLabel').textContent;
+        const totalNumber = parseInt(totalLabel.replace(/[^\d]/g, '')) || 0;
+        document.getElementById('totalInput').value = totalNumber;
+    });
+</script>
+
 
 @endsection

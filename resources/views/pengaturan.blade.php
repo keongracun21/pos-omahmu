@@ -18,7 +18,7 @@
             <i class="bi bi-cursor fs-5"></i>
             <span>PO</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="laporan" class="nav-link">
             <i class="bi bi-file-earmark-bar-graph fs-5"></i>
             <span>Laporan</span>
         </a>

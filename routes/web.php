@@ -7,7 +7,9 @@ use App\Http\Controllers\{
     ProfileController,
     DashboardController,
     UserController,
-    StokMenuController
+    StokMenuController,
+    OrderController,
+    LaporanController
 };
 
 // Public Routes
@@ -34,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', 'update')->name('pengaturan.update');
     });
 
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+
     // User Management
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/', [UserController::class, 'store'])->name('store');
@@ -42,3 +46,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Tambahkan route authenticated lainnya di sini
 });
+
+// Submit order
+Route::post('/submit-order', [OrderController::class, 'submit'])->name('order.submit');
